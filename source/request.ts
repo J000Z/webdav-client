@@ -100,16 +100,16 @@ export async function request(
         return requestAuto(requestOptions, context);
     }
     if (requestOptions._digest) {
-        return requestDigest(requestOptions);
+        return requestDigest(requestOptions, context);
     }
-    return requestStandard(requestOptions);
+    return requestStandard(requestOptions, context);
 }
 
 async function requestAuto(
     requestOptions: RequestOptionsWithState,
     context: WebDAVClientContext
 ): Promise<Response> {
-    const response = await requestStandard(requestOptions);
+    const response = await requestStandard(requestOptions, context);
     if (response.ok) {
         context.authType = AuthType.Password;
         return response;
@@ -118,12 +118,12 @@ async function requestAuto(
         context.authType = AuthType.Digest;
         setupAuth(context, context.username, context.password, undefined, undefined);
         requestOptions._digest = context.digest;
-        return requestDigest(requestOptions);
+        return requestDigest(requestOptions, context);
     }
     return response;
 }
 
-async function requestDigest(requestOptions: RequestOptionsWithState): Promise<Response> {
+async function requestDigest(requestOptions: RequestOptionsWithState, context: WebDAVClientContext): Promise<Response> {
     // Remove client's digest authentication object from request options
     const _digest = requestOptions._digest;
     delete requestOptions._digest;
@@ -136,7 +136,7 @@ async function requestDigest(requestOptions: RequestOptionsWithState): Promise<R
         });
     }
     // Perform digest request + check
-    const response = await requestStandard(requestOptions);
+    const response = await requestStandard(requestOptions, context);
     if (response.status == 401) {
         _digest.hasDigestAuth = parseDigestAuth(response, _digest);
         if (_digest.hasDigestAuth) {
@@ -145,7 +145,7 @@ async function requestDigest(requestOptions: RequestOptionsWithState): Promise<R
                     Authorization: generateDigestAuthHeader(requestOptions, _digest)
                 }
             });
-            const response2 = await requestStandard(requestOptions);
+            const response2 = await requestStandard(requestOptions, context);
             if (response2.status == 401) {
                 _digest.hasDigestAuth = false;
             } else {
@@ -159,14 +159,14 @@ async function requestDigest(requestOptions: RequestOptionsWithState): Promise<R
     return response;
 }
 
-function requestStandard(requestOptions: RequestOptions): Promise<Response> {
+function requestStandard(requestOptions: RequestOptions, context: WebDAVClientContext): Promise<Response> {
     const patcher = getPatcher();
     return patcher.patchInline(
         "request",
         (options: RequestOptions) =>
             patcher.patchInline(
                 "fetch",
-                fetch,
+                context.fetch ?? fetch,
                 options.url,
                 getFetchOptions(options) as RequestInit
             ),
