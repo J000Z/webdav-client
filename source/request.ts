@@ -123,7 +123,10 @@ async function requestAuto(
     return response;
 }
 
-async function requestDigest(requestOptions: RequestOptionsWithState, context: WebDAVClientContext): Promise<Response> {
+async function requestDigest(
+    requestOptions: RequestOptionsWithState,
+    context: WebDAVClientContext
+): Promise<Response> {
     // Remove client's digest authentication object from request options
     const _digest = requestOptions._digest;
     delete requestOptions._digest;
@@ -159,7 +162,10 @@ async function requestDigest(requestOptions: RequestOptionsWithState, context: W
     return response;
 }
 
-function requestStandard(requestOptions: RequestOptions, context: WebDAVClientContext): Promise<Response> {
+function requestStandard(
+    requestOptions: RequestOptions,
+    context: WebDAVClientContext
+): Promise<Response> {
     const patcher = getPatcher();
     return patcher.patchInline(
         "request",

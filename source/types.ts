@@ -333,7 +333,7 @@ export interface WebDAVClientContext {
     token?: OAuthToken;
     username?: string;
     withCredentials?: boolean;
-    fetch?: (url: URL | RequestInfo, init?: RequestInit) => Promise<Response>
+    fetch?: (url: URL | RequestInfo, init?: RequestInit) => Promise<Response>;
 }
 
 export interface WebDAVClientError extends Error {
@@ -355,7 +355,7 @@ export interface WebDAVClientOptions {
     token?: OAuthToken;
     username?: string;
     withCredentials?: boolean;
-    fetch?: (url: URL | RequestInfo, init?: RequestInit) => Promise<Response>
+    fetch?: (url: URL | RequestInfo, init?: RequestInit) => Promise<Response>;
 }
 
 export interface WebDAVMethodOptions {
