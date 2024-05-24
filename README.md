@@ -757,3 +757,10 @@ It is a known issue that Nextcloud servers by default don't return friendly CORS
  * [ownCloud SDK](https://github.com/owncloud/owncloud-sdk)
  * [React OxIDE](https://github.com/bootrino/reactoxide)
  * [BackItUp](https://github.com/simatec/ioBroker.backitup)
+
+
+## Dev
+```
+pnpm install
+pnpm dlx husky install
+```
