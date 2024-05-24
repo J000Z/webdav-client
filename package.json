@@ -31,6 +31,9 @@
     "test:web:karma": "karma start test/karma.conf.cjs",
     "test:web:server": "node --loader ts-node/esm ./test/server.web.ts"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "files": [
     "dist/",
     "test/server/",
@@ -38,7 +41,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/perry-mitchell/webdav-client.git"
+    "url": "git+https://github.com/J000Z/webdav-client.git"
   },
   "keywords": [
     "webdav",
