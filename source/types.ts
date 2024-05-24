@@ -1,5 +1,5 @@
 import * as Stream from "node:stream";
-import { Response } from "@buttercup/fetch";
+import { Response, RequestInfo, RequestInit } from "@buttercup/fetch";
 
 export { Request, Response, RequestInfo, RequestInit } from "@buttercup/fetch";
 
