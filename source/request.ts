@@ -24,10 +24,10 @@ import {
 } from "./types.js";
 import { setupAuth } from "./auth/index.js";
 
-function getFetchOptions(requestOptions: RequestOptions): RequestInit | RequestInitNF {
+function getFetchOptions(requestOptions: RequestOptions): RequestInit {
     let headers: Headers = {};
     // Handle standard options
-    const opts: RequestInit | RequestInitNF = {
+    const opts: RequestInit = {
         method: requestOptions.method
     };
     if (requestOptions.headers) {
@@ -167,7 +167,7 @@ function requestStandard(
     context: WebDAVClientContext
 ): Promise<Response> {
     if (context.fetch) {
-        return context.fetch(requestOptions.url, getFetchOptions(requestOptions) as RequestInit)
+        return context.fetch(requestOptions.url, getFetchOptions(requestOptions))
     }
 
     const patcher = getPatcher();
