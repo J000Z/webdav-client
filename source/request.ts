@@ -166,13 +166,17 @@ function requestStandard(
     requestOptions: RequestOptions,
     context: WebDAVClientContext
 ): Promise<Response> {
+    if (context.fetch) {
+        return context.fetch(requestOptions.url, getFetchOptions(requestOptions) as RequestInit)
+    }
+
     const patcher = getPatcher();
     return patcher.patchInline(
         "request",
         (options: RequestOptions) =>
             patcher.patchInline(
                 "fetch",
-                context.fetch ?? fetch,
+                fetch,
                 options.url,
                 getFetchOptions(options) as RequestInit
             ),
